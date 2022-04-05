@@ -1,3 +1,4 @@
+// required: npm add react-app-rewired
 // const webpack = require('webpack');
 
 module.exports = function override(config) {
