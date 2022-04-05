@@ -18,8 +18,8 @@ export function Log({log}: Props) {
   const {blockNumber, logIndex, transactionHash, address, data, topics} = log
 
   const id = JSON.stringify({blockNumber, logIndex})
-  const from = utils.hexStripZeros(topics[1])
-  const to = utils.hexStripZeros(topics[2])
+  const [from] = utils.defaultAbiCoder.decode(['address'], topics[1])
+  const [to] = utils.defaultAbiCoder.decode(['address'], topics[2])
 
   useEffect(() => {
     async function load() {
@@ -83,7 +83,7 @@ export function Log({log}: Props) {
       </Card.Section>
       <Card.Section title="Contract Details" actions={[{content: 'Contract', url: `https://etherscan.io/address/${address}#code`, external: true}]}>
         <Stack alignment="center">
-          {token?.logo && <Image size={64} source={token.logo} alt={`${token.name || 'token'} logo`} />}
+          {token?.logo && <Image style={{maxWidth: 64}} size={64} source={token.logo} alt={`${token.name || 'token'} logo`} />}
           <Stack vertical>
             <p>{address}</p>
             {(token?.name || token?.symbol) && <p>{[token.name, token.symbol].filter(Boolean).join(' | ')}</p>}
@@ -124,14 +124,4 @@ export function Log({log}: Props) {
 
     return `${amount}${token?.symbol ? ` ${token.symbol}` : ''}`
   }
-
-  // function formatTransfer() {
-  //   const fromAmount = fromBalance && token?.decimals ? fromBalance / Math.pow(10, token.decimals) : fromBalance
-  //   const toAmount = toBalance && token?.decimals ? toBalance / Math.pow(10, token.decimals) : toBalance
-
-  //   return [
-  //     `${from}${fromAmount ? ` (${fromAmount}${token?.symbol ? ` ${token.symbol}` : ''})` : ''}`,
-  //     `${to}${toAmount ? ` (${toAmount}${token?.symbol ? ` ${token.symbol}` : ''})` : ''}`,
-  //   ].join(' → ')
-  // }
 }
