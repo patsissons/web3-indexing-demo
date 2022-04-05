@@ -6,19 +6,36 @@ import * as data from './_data'
 
 export const defaultProvider = new providers.CloudflareProvider()
 
-export interface GetBlockDataOptions {
+export interface ProviderOptions {
   provider?: Provider
-  blockHashOrBlockTag?: providers.BlockTag
   test?: boolean
 }
 
-export async function getBlockData({provider = defaultProvider, blockHashOrBlockTag, test}: GetBlockDataOptions = {}): Promise<BlockWithTransactions> {
+export interface GetBlockDataOptions extends ProviderOptions {
+  blockTag?: providers.BlockTag
+}
+
+export async function getBlockData({provider = defaultProvider, blockTag = 'latest', test}: GetBlockDataOptions = {}): Promise<BlockWithTransactions> {
   if (test) {
     return data.block;
   }
 
-  const blockNum = blockHashOrBlockTag || await provider.getBlockNumber()
-  const block = await provider.getBlockWithTransactions(blockNum)
+  const block = await provider.getBlockWithTransactions(blockTag)
 
   return block;
+}
+
+export interface GetLogsOptions extends ProviderOptions {
+  fromBlock: providers.BlockTag
+  toBlock?: providers.BlockTag
+  address?: string
+  topics?: string[]
+}
+
+export async function getLogs({fromBlock, toBlock = 'latest', address, topics, provider = defaultProvider, test}: GetLogsOptions) {
+  if (test) {
+    return data.logs
+  }
+
+  return provider.getLogs({address, fromBlock, toBlock, topics})
 }
