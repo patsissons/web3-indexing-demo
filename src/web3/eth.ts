@@ -176,8 +176,17 @@ export interface GetNFTsForCollectionResponse {
 }
 
 export function getNFTsForCollection(contractAddress: string, options: GetNFTSForCollectionOptions = {}): Promise<GetNFTsForCollectionResponse> {
-  // getNFTMetadata
   const params = Object.entries({...options, contractAddress}).map(([key, value]) => `${key}=${value}`).join('&');
-  const url = `${alchemyProvider.connection.url}/getNFTsForCollection?${params}`
-  return fetchJson(url)
+  const url = `${alchemyProvider.connection.url}/getNFTsForCollection?${params}`;
+  return fetchJson(url);
+}
+
+export interface GetOwnersForTokenResponse {
+  owners: string[];
+}
+
+export function getOwnersForToken(contractAddress: string, tokenId: string): Promise<GetOwnersForTokenResponse> {
+  const params = Object.entries({contractAddress, tokenId}).map(([key, value]) => `${key}=${value}`).join('&');
+  const url = `${alchemyProvider.connection.url}/getOwnersForToken?${params}`;
+  return fetchJson(url);
 }

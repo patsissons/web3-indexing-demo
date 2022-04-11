@@ -5,7 +5,7 @@ import { getBlockData, getLogs } from './eth'
 import { JsonData } from './JsonData'
 import { Log } from './Log'
 
-// hash("Transfer(address,address,uint256)")
+// ethers.utils.id('Transfer(address,address,uint256)')
 const defaultTopics = ['0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef']
 
 export interface Props {

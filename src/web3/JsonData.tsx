@@ -1,7 +1,8 @@
 export interface Props {
   data: any
+  replacer?: (number | string)[] | null;
 }
 
-export function JsonData({data}: Props) {
-  return <pre>{JSON.stringify(data, null, 2)}</pre>
+export function JsonData({data, replacer = null}: Props) {
+  return <pre style={{whiteSpace: 'pre-wrap'}}>{JSON.stringify(data, replacer, 2)}</pre>
 }
